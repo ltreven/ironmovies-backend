@@ -28,7 +28,7 @@ router.route('/')
 
 router.post('/signup', (req, res, next) => {
     logger.info('Routing POST SIGNUP - creates the user');
-    Users.register(new Users({fullname: req.body.fullName, username: req.body.username}), 
+    Users.register(new Users({fullName: req.body.fullName, username: req.body.username}), 
                     req.body.password, (err, user) => {
         if (err) {
             logger.info('Could not create user');

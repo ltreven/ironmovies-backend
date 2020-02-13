@@ -20,7 +20,7 @@ const schema = new mongoose.Schema({
     score: {
         type: Number,
         min: [0, 'Score accepts values between 0 and 10'],
-        max: [12, 'Score accepts values between 0 and 10']
+        max: [10, 'Score accepts values between 0 and 10']
       }
 }, {
         timestamps: true
