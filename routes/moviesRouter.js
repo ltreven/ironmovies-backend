@@ -15,8 +15,27 @@ router.route('/')
     next();
 })
 .get((req, res, next) => {
-    logger.info('Routing GET movies - returns all movies');
+    logger.info('Routing GET movies - returns a list of movies');
+    
+    // (BONUS) Pagination (and sorting):
+    let limit = 20;
+    let offset = 0;
+    let sort = {};
+
+    if (req.query.limit && !isNaN(req.query.limit)) {
+        limit = parseInt(req.query.limit);
+    }
+    if (req.query.offset && !isNaN(req.query.offset)) {
+        offset = parseInt(req.query.offset);
+    }
+    if (req.query.sort) {
+        sort = req.query.sort;
+    }
+
     Movies.find({})
+    .skip(offset)
+    .limit(limit)
+    .sort(sort)
     .then((movies) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');

@@ -17,13 +17,25 @@ router.route('/')
 })
 .get((req,res,next) => {
     logger.info('Routing GET users - returns users');
-    Users.find({})
-    .then((users) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(users);
-    }, (err) => next(err))
-    .catch((err) => next(err));
+    if (req.query.username) {
+        Users.findOne({})
+        .where('username').equals(req.query.username)
+        .then((user) => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(user);
+        }, (err) => next(err))
+        .catch((err) => next(err));    
+        
+    } else {
+        Users.find({})
+        .then((users) => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(users);
+        }, (err) => next(err))
+        .catch((err) => next(err));
+    }
 });
 
 router.post('/signup', (req, res, next) => {
@@ -47,18 +59,6 @@ router.post('/signup', (req, res, next) => {
         }
     });
 });
-
-router.get('/:username')
-.get((req, res, next) => {
-    logger.info('Routing GET users/:username', req.params.username);
-    USers.findById(req.params.username)
-    .then((user) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(user);
-    }, (err) => next(err))
-    .catch((err) => next(err));
-})
 
 router.get('/login', passport.authenticate('local'), (req, res) => {
     logger.info('Routing GET LOGIN - authenticates the user');

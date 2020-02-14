@@ -27,4 +27,7 @@ const schema = new mongoose.Schema({
     }
 );
 
+schema.index({ title: 1, type: 1 });
+schema.index({ release: 1, type: -1 });
+
 module.exports = mongoose.model('Movie', schema);
