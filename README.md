@@ -35,11 +35,5 @@ npm start
 ### Test via Postman
 
 ```
-Use the file provided
-```
-
-### Test via commandline
-
-```
-curl
+https://documenter.getpostman.com/view/2306941/SzKPUfw5?version=latest
 ```
