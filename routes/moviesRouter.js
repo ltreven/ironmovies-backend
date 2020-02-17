@@ -74,13 +74,19 @@ router.route('/:movieId')
 })
 .get((req, res, next) => {
     logger.info('Routing GET movies/:movieId', req.params.movieId);
-    Movies.findById(req.params.movieId)
-    .then((movie) => {
-        res.statusCode = 200;
+    if (req.params.movieId.match(/^[0-9a-fA-F]{24}$/)) {
+        Movies.findById(req.params.movieId)
+        .then((movie) => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(movie);
+        }, (err) => next(err))
+        .catch((err) => next(err));            
+    } else {
+        res.statusCode = 400;
         res.setHeader('Content-Type', 'application/json');
-        res.json(movie);
-    }, (err) => next(err))
-    .catch((err) => next(err));
+        res.json({status: 'FAILED', message: 'This ID is not valid: ' + req.params.movieId});
+    }
 })
 .post((req, res, next) => {
     logger.info('Routing POST movies/:movieId - not supported');

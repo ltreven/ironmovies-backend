@@ -10,13 +10,15 @@ router.route('/')
 .all((req, res, next) => {
     logger.info('Routing uploads/');
     res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
     next();
 })
 .post(authenticate.verifyUser, async (req, res, next) => {
     logger.info('Uploading Movie image');
 
+    console.log('Upload headers: ', req.headers);
+
     if(!req.files) {
+        res.statusCode = 400;
         res.json({
             status: false,
             message: 'Files were not specified.'
@@ -28,6 +30,9 @@ router.route('/')
             //indicate directory
             posterImage.mv('./public/img/' + posterImage.name);
     
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            
             //send response
             res.json({
                 status: true,
@@ -37,7 +42,8 @@ router.route('/')
                     mimetype: posterImage.mimetype,
                     size: posterImage.size
                 }
-            });    
+            });
+            
         } catch (err) {
             next(err);
         }

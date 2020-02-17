@@ -17,6 +17,7 @@ const schema = new mongoose.Schema({
         type: Date,
         required: true
       },
+    category: String,
     score: {
         type: Number,
         min: [0, 'Score accepts values between 0 and 10'],

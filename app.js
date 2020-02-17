@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
+const cors = require('cors');
 const passport = require('passport');
 const morgan = require('morgan');
 const path = require('path');
@@ -11,6 +12,7 @@ const uploadRouter = require('./routes/uploadRouter');
 
 const app = express();
 
+app.use(cors());
 app.use(morgan("combined", { "stream": logger.stream }));
 app.use(express.static(path.join(__dirname, 'public')));
 // view engine setup
@@ -27,7 +29,7 @@ app.use(passport.initialize());
 
 app.use('/api/movies', moviesRouter);
 app.use('/api/users', usersRouter);
-app.use('/upload', uploadRouter);
+app.use('/api/upload', uploadRouter);
 
 express.Router().get('/',function(req,res){
   //__dirname : resolves to project folder.
