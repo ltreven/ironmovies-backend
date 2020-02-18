@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
 const passLocalMong = require('passport-local-mongoose');
 
-const schema = new mongoose.Schema({
-    facebookId: String,
-    fullName: {
-        type: String,
-        required: true
-      }
+const schema = new mongoose.Schema(
+    {
+        facebookId: String,
+        fullName: String
     }, {
         timestamps: true
     }

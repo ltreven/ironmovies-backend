@@ -21,6 +21,7 @@ router.route('/')
     let limit = 20;
     let offset = 0;
     let sort = {};
+    let search = {};
 
     if (req.query.limit && !isNaN(req.query.limit)) {
         limit = parseInt(req.query.limit);
@@ -31,8 +32,13 @@ router.route('/')
     if (req.query.sort) {
         sort = req.query.sort;
     }
-
-    Movies.find({})
+    if (req.query.search) {
+        search = {$or: [
+            {title: { $regex: new RegExp(req.query.search), $options: 'i' } }, 
+            {director: { $regex: new RegExp(req.query.search), $options: 'i' } } 
+        ]};
+    }
+    Movies.find(search)
     .skip(offset)
     .limit(limit)
     .sort(sort)

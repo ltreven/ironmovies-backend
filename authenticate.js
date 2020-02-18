@@ -55,12 +55,17 @@ exports.facebookPassport = passport.use(new FacebookTokenStrategy({
                 return done(null, user);
             } else {
                 // user does not exit
-                logger.info('creating user!', profile.id, profile.name.givenName, profile.name.familyName);
-                var newuser = new User({ userName: profile.displayName});
+                logger.info('creating user! id: ' + profile.id + 
+                                            ', GivenName: ' + profile.name.givenName + 
+                                            ', Family: ' + profile.name.familyName + 
+                                            ', DisplayName: ' + profile.displayName +
+                                            ', Email[0]: ' + profile.emails[0].value + 
+                                            ', username: '+ profile.username + 
+                                            ', photos[0]: '+ profile.photos[0].value );
+                var newuser = new User({ username: profile.displayName});
                 newuser.facebookId = profile.id;
-                newuser.userName = profile.id;
-                newuser.firstName = profile.name.givenName;
-                newuser.lastName = profile.name.familyName;
+                newuser.username = profile.emails[0].value;
+                newuser.fullName = profile.displayName;
                 newuser.save((err, user) => {
                     if (err) {
                         return done(err, false);

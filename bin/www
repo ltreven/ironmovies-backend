@@ -40,7 +40,7 @@ mongoose.set('useUnifiedTopology', true);
 const connect = mongoose.connect(config.dbSettings.mongoUrl);
 connect.then((db) => {
   //assert.equal(err, null);
-  console.log('Connected to Mongo.');
+  console.log('Connected to iron-movie MongoDB.');
 });
 
 /**

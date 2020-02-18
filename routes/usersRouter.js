@@ -68,8 +68,15 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
     res.json({ success: true, token: token, status: 'User successfully logged in'});
 });
 
-router.post('/login/facebook', passport.authenticate('facebook-token'), (req, res) => {
-    logger.info('Routing GET LOGIN/FACEBOOK - authenticates the user');
+router.route('/login/facebook')
+.all((req,res,next) => {
+    logger.info('Routing LOGIN/FACEBOOK ');
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    next();
+})
+.post(passport.authenticate('facebook-token'), (req, res, next) => {
+    logger.info('Routing POST LOGIN/FACEBOOK - authenticates the user');
     if (req.user) {
         var token = authenticate.getToken({_id: req.user._id});
         res.statusCode = 200;
